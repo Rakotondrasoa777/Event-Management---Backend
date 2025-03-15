@@ -7,8 +7,8 @@ const app = express();
 const port = 3000
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Autoriser uniquement ce domaine
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
 app.get('/events', eventController.getAllEvent);
