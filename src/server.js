@@ -4,7 +4,7 @@ const eventController = require("./controllers/showEvent");
 const userControlllers = require("./controllers/showUser");
 
 const app = express();
-const port = 3000
+const port = 1818
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -12,6 +12,9 @@ app.use(cors({
 }));
 
 app.get('/events', eventController.getAllEvent);
+app.get('/events/:id', eventController.getEventById);
+
+
 app.get('/users', userControlllers.getAllUser);
 
 
