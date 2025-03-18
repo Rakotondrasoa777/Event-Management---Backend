@@ -13,6 +13,7 @@ app.use(cors({
 
 app.get('/events', eventController.getAllEvent);
 app.get('/events/:id', eventController.getEventById);
+app.get('/events/date/:date', eventController.filterEventsByDate);
 
 
 app.get('/users', userControlllers.getAllUser);
