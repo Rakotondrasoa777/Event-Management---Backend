@@ -16,7 +16,7 @@ const eventController = {
     getEventById: async(req, res) => {
         const id = parseInt(req.params.id);
         let sql = "select * from event where id = $1"
-        
+
         if (isNaN(id)) {
             return res.status(400).send('Invalid ID');
         }
@@ -32,6 +32,24 @@ const eventController = {
         } catch (e) {
             console.error(e)
             res.status(500).send('Server error')
+        }
+    },
+
+    filterEventsByDate: async (req, res) => {
+        const date = req.params.date;
+        let sql = "select * from event where date_of_event = $1"
+
+        try {
+            const {rows} = await pool.query(sql, [date])
+
+            if (rows.length === 0) {
+                return res.status(404).send('No events available for this date')
+            }
+
+            res.status(200).json(rows);
+        } catch (e) {
+            console.error(e);
+            res.status(500).send('Server error');
         }
     }
 
