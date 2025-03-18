@@ -19,7 +19,7 @@ CREATE TABLE "user" (
     email varchar(100)
 );
 
-CREATE TABLE reserve (
+CREATE TABLE reservation (
     id_event int,
     id_user int, 
     constraint fk_event foreign key  (id_event) references event (id),
