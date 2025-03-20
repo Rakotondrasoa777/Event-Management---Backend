@@ -51,7 +51,7 @@ INSERT INTO "user" (id, first_name, last_name, age, email) VALUES
 (4, 'Emily', 'Williams', 28, 'emily.williams@example.com'),
 (5, 'David', 'Brown', 40, 'david.brown@example.com');
 
-INSERT INTO reserve (id_event, id_user) VALUES 
+INSERT INTO reservation (id_event, id_user) VALUES 
 (1, 1),
 (2, 2),
 (3, 3),
