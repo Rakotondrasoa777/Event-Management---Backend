@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const eventController = require("./controllers/showEvent");
-const userControlllers = require("./controllers/showUser");
+const eventRoutes = require("./routes/eventRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const port = 1818
@@ -11,13 +11,9 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
-app.get('/events', eventController.getAllEvent);
-app.get('/events/:id', eventController.getEventById);
-app.get('/events/date/:date', eventController.filterEventsByDate);
+app.use("/events", eventRoutes);
 
-
-app.get('/users', userControlllers.getAllUser);
-
+app.use("/users", userRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running in :  http://localhost:${port}`);
