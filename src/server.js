@@ -2,9 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const eventRoutes = require("./routes/eventRoutes");
 const userRoutes = require("./routes/userRoutes");
+const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
 const port = 1818
+
+const authRoutes = require("./routes/authRoutes");
+app.use(express.json());
+app.use("/users", authRoutes);
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -14,6 +19,10 @@ app.use(cors({
 app.use("/events", eventRoutes);
 
 app.use("/users", userRoutes);
+
+app.use("/user", authRoutes, authMiddleware, (req, res) => {
+    res.json({message: "Now, you can reserve events", user: req.users})
+})
 
 app.listen(port, () => {
     console.log(`Server is running in :  http://localhost:${port}`);
