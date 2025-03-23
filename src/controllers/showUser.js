@@ -3,7 +3,7 @@ const pool = require("../config/db");
 const userControllers = {
     getAllUser: async(req, res) => {
         try {
-            const {rows} = await pool.query('select * from \"user\"')
+            const {rows} = await pool.query('select id, username, email from users')
             res.json(rows)
         } catch (e) {
             console.error(e);
@@ -13,7 +13,7 @@ const userControllers = {
 
     getUserById: async(req, res) => {
         const id = parseInt(req.params.id);
-        let sql = "select * from \"user\" where id = $1"
+        let sql = "select id, username, email from users where id = $1"
 
         if (isNaN(id)) {
             return res.status(400).send('Invalid ID');
@@ -23,7 +23,7 @@ const userControllers = {
             const {rows} = await pool.query(sql, [id])
 
             if(rows.length === 0) {
-                return res.status(404).send('Event not found');
+                return res.status(404).send('User not found');
             }
 
             res.status(200).json(rows);
