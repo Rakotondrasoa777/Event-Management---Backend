@@ -3,7 +3,7 @@ CREATE DATABASE event_management;
 \c event_management
 
 CREATE TABLE event (
-    id int primary key,
+    id serial primary key,
     name varchar(200) not null,
     date_of_event date,
     categorie varchar(100),
@@ -37,12 +37,12 @@ CREATE TABLE ticket_stock (
 
 
 /*-----Insertion-----*/
-INSERT INTO event (id, name, date_of_event, categorie, location, available_of_ticket) VALUES 
-(1, 'Music Concert', '2025-05-15', 'Music', 'New York City', '2025-04-01'),
-(2, 'Art Exhibition', '2025-06-10', 'Art', 'London', '2025-05-01'),
-(3, 'Tech Conference', '2025-07-20', 'Technology', 'San Francisco', '2025-06-01'),
-(4, 'Food Festival', '2025-08-25', 'Food', 'Los Angeles', '2025-07-15'),
-(5, 'Comedy Show', '2025-09-05', 'Comedy', 'Chicago', '2025-08-01');
+INSERT INTO event (name, date_of_event, categorie, location, available_of_ticket) VALUES 
+('Music Concert', '2025-05-15', 'Music', 'New York City', '2025-04-01'),
+('Art Exhibition', '2025-06-10', 'Art', 'London', '2025-05-01'),
+('Tech Conference', '2025-07-20', 'Technology', 'San Francisco', '2025-06-01'),
+('Food Festival', '2025-08-25', 'Food', 'Los Angeles', '2025-07-15'),
+('Comedy Show', '2025-09-05', 'Comedy', 'Chicago', '2025-08-01');
 
 INSERT INTO ticket_stock (id_ticket, id_event, stock, price, type_of_ticket) VALUES 
 (1, 1, 100, 100.0, 'VIP'),
