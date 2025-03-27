@@ -53,6 +53,51 @@ const userControllers = {
             res.status(500).send('Server error')
         }
     },
+
+    updateUserById: async (req, res) => {
+        const id = parseInt(req.params.id);
+        const { username, email, password } = req.body;
+        const sql = "update users set username = $1, email = $2, password = $3 where id = $4 returning *";
+        const values = [username, email, password, id];
+        
+        if (isNaN(id)) {
+            return res.status(400).send({error: "Invalid ID"})
+        }
+
+        try {
+            const isUserFinded = await User.findUserById(id);
+            console.log(isUserFinded);
+            
+            if (isUserFinded === undefined) {
+                return res.status(404).send({error: "Event not found"})
+            }
+            
+            const userUpdated = await pool.query(sql, values);
+
+            res.status(200).send({
+                Information: "user successfully updated",
+                UserUpdated: userUpdated.rows
+            });
+
+        } catch (e) {
+            res.status(400).send({error: e.message})
+        }
+    },
+
+    deleteUserById: async (req, res) => {
+        const id = parseInt(req.params.id); 
+        let sql = "delete from users where id = $1"
+        if (isNaN(id)) {
+            return res.status(400).send({error: "Invalid ID"})
+        }
+
+        try {
+            await pool.query(sql, [id]);
+            res.status(204).send("user successfully deleted");
+        } catch(e) {
+            res.status(400).send({error: e.message})
+        }
+    }
 }
 
 module.exports = userControllers
