@@ -8,7 +8,7 @@ const authController = {
 
         const { username, email, password } = req.body;
         try {
-            const existingUser = await User.findUserByUsername(username);
+            const existingUser = await User.findUserByEmail(email);
             if (existingUser) {
                 return res.status(400).json({ error: 'User already exists' });
             }
