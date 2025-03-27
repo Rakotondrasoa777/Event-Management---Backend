@@ -23,10 +23,10 @@ const authController = {
     
     login: async (req, res) => {
         
-        const { username, password } = req.body;
+        const { email, password } = req.body;
     
         try {
-            const user = await User.findUserByUsername(username);
+            const user = await User.findUserByEmail(email);
             console.log(user);
             
                 if(!user) {
