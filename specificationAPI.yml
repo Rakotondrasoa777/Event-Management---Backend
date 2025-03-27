@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Event Management API
-  description: API for managing events, users and authentication
+  title: Tapakila Management API
+  description: API for managing events
   version: 1.0.0
 servers:
   - url: http://localhost:1818
-    description: Development server
+    description: Server of Tapakila
 
 paths:
   /auth/register:
