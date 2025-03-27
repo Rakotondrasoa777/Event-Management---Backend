@@ -9,18 +9,24 @@ const port = 1818
 
 const authRoutes = require("./routes/authRoutes");
 app.use(express.json());
-app.use("/users", authRoutes);
+app.use("/login", authRoutes);
 
 app.use(cors({
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
+
+
 app.use("/events", eventRoutes);
 
 app.use("/users", userRoutes);
 
-app.use("/user", authRoutes, authMiddleware, (req, res) => {
+app.use("/", authRoutes, authMiddleware, (req, res) => {
     res.json({message: "Now, you can reserve events", user: req.users})
 })
 
