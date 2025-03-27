@@ -16,6 +16,13 @@ class User {
         
         return rows[0];
     }
+
+    static async findUserById(id) {
+        const findUserByIdSql = "select id from users where id = $1";
+        const {rows} = await pool.query(findUserByIdSql, [id]);
+        
+        return rows[0];
+    }
 }
 
 module.exports = User;
