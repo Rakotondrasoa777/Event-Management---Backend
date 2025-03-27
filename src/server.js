@@ -7,10 +7,6 @@ const authMiddleware = require("./middleware/authMiddleware");
 const app = express();
 const port = 1818
 
-const authRoutes = require("./routes/authRoutes");
-app.use(express.json());
-app.use("/login", authRoutes);
-
 app.use(cors({
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -21,12 +17,16 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
+const authRoutes = require("./routes/authRoutes");
+app.use(express.json());
+
+app.use("/auth", authRoutes);
 
 app.use("/events", eventRoutes);
 
 app.use("/users", userRoutes);
 
-app.use("/", authRoutes, authMiddleware, (req, res) => {
+app.get("/reservation", authRoutes, authMiddleware, (req, res) => {
     res.json({message: "Now, you can reserve events", user: req.users})
 })
 
