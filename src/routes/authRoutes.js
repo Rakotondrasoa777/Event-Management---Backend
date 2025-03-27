@@ -4,7 +4,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/', authController.login);
 router.get('/reservation', authMiddleware);
 
 module.exports = router;
