@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS event_management;
 CREATE DATABASE event_management;
 
 \c event_management
@@ -7,8 +8,10 @@ CREATE TABLE event (
     title varchar(200) not null,
     date_of_event date,
     categorie varchar(100),
+    descritption varchar,
     location varchar(100),
-    available_of_ticket date
+    available_of_ticket date,
+    img varchar
 );
 
 CREATE TABLE users (
@@ -38,12 +41,12 @@ CREATE TABLE ticket_stock (
 
 
 /*-----Insertion-----*/
-INSERT INTO event (title, date_of_event, categorie, location, available_of_ticket) VALUES 
-('Music Concert', '2025-05-15', 'Music', 'New York City', '2025-04-01'),
-('Art Exhibition', '2025-06-10', 'Art', 'London', '2025-05-01'),
-('Tech Conference', '2025-07-20', 'Technology', 'San Francisco', '2025-06-01'),
-('Food Festival', '2025-08-25', 'Food', 'Los Angeles', '2025-07-15'),
-('Comedy Show', '2025-09-05', 'Comedy', 'Chicago', '2025-08-01');
+INSERT INTO event (title, date_of_event, categorie, descritption, location, available_of_ticket, img) VALUES 
+('Music Concert', '2025-05-15', 'Music', 'A live performance featuring world-renowned musicians. The concert will include a variety of genres, from classical to contemporary, offering a unique experience for music lovers of all kinds.', 'New York City', '2025-04-01', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\Music Concert.jpg'),
+('Art Exhibition', '2025-06-10', 'Art', 'An exciting showcase of contemporary art from emerging and established artists. The exhibition will explore themes such as identity, culture, and technology, with works in various mediums including painting, sculpture, and digital art.', 'London', '2025-05-01', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\Art Exhibition.jpg'),
+('Tech Conference', '2025-07-20', 'Technology', 'A global gathering of tech enthusiasts, innovators, and industry leaders. The conference will feature keynote speakers, panel discussions, and hands-on workshops covering the latest trends in artificial intelligence, blockchain, and cybersecurity.', 'San Francisco', '2025-06-01', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\Tech conference.jpg'),
+('Food Festival', '2025-08-25', 'Food', 'A celebration of global cuisine, with food stalls, cooking demonstrations, and tasting events from top chefs around the world. Enjoy a diverse range of dishes, from street food to gourmet creations, all in one vibrant location.', 'Los Angeles', '2025-07-15', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\food festival.jpg'),
+('Comedy Show', '2025-09-05', 'Comedy', 'A night of laughter with some of the funniest stand-up comedians in the industry. The show will feature a mix of both well-known comedians and fresh talent, providing an evening full of entertainment and humor.', 'Chicago', '2025-08-01', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\Comedy Show.jpg');
 
 INSERT INTO ticket_stock (id_event, stock, price, type_of_ticket) VALUES 
 (1, 100, 100.0, 'VIP'),
