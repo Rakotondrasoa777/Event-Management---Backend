@@ -7,15 +7,7 @@ const authMiddleware = require("./middleware/authMiddleware");
 const app = express();
 const port = 1818
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
-
-app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
+app.use(cors())
 
 const authRoutes = require("./routes/authRoutes");
 app.use(express.json());
