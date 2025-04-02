@@ -55,9 +55,9 @@ const eventController = {
     },
 
     createEvent: async (req, res) => {
-        const { name, date_of_event, categorie, location, available_of_ticket } = req.body
-        let sql = "insert into event (name, date_of_event, categorie, location, available_of_ticket) values ($1, $2, $3, $4, $5) returning *";
-        const value = [name, date_of_event, categorie, location, available_of_ticket];
+        const { title, date_of_event, categorie, location, available_of_ticket } = req.body
+        let sql = "insert into event (title, date_of_event, categorie, location, available_of_ticket) values ($1, $2, $3, $4, $5) returning *";
+        const value = [title, date_of_event, categorie, location, available_of_ticket];
         try {
             const maxIdResult = await pool.query("SELECT MAX(id) AS max_id FROM event");
             const maxId = maxIdResult.rows[0].max_id || 0;
@@ -93,9 +93,9 @@ const eventController = {
 
     updateEventById: async (req, res) => {
         const id = parseInt(req.params.id);
-        const { name, date_of_event, categorie, location, available_of_ticket } = req.body;
-        const sql = "update event set name = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
-        const values = [name, date_of_event, categorie, location, available_of_ticket, id];
+        const { title, date_of_event, categorie, location, available_of_ticket } = req.body;
+        const sql = "update event set title = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
+        const values = [title, date_of_event, categorie, location, available_of_ticket, id];
         
         if (isNaN(id)) {
             return res.status(400).send({error: "Invalid ID"})

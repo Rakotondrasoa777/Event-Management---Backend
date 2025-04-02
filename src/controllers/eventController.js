@@ -2,11 +2,11 @@ const pool = require('../config/db');
 const Event = require('../models/Event');
 
 const eventController = {
-    getAllEvent: async(req, res) => {
+    getAllEvent: async (req, res) => {
         let sql = "select * from event"
 
         try {
-            const {rows} = await pool.query(sql)
+            const { rows } = await pool.query(sql)
             res.status(200).json(rows);
         } catch (e) {
             console.error(e);
@@ -14,18 +14,18 @@ const eventController = {
         }
     },
 
-    getEventById: async(req, res) => {
+    getEventById: async (req, res) => {
         const id = parseInt(req.params.id);
         let sql = "select * from event where id = $1"
 
         if (isNaN(id)) {
             return res.status(400).send('Invalid ID');
         }
-    
-        try {
-            const {rows} = await pool.query(sql, [id])
 
-            if(rows.length === 0) {
+        try {
+            const { rows } = await pool.query(sql, [id])
+
+            if (rows.length === 0) {
                 return res.status(404).send('Event not found');
             }
 
@@ -41,7 +41,7 @@ const eventController = {
         let sql = "select * from event where date_of_event = $1"
 
         try {
-            const {rows} = await pool.query(sql, [date])
+            const { rows } = await pool.query(sql, [date])
 
             if (rows.length === 0) {
                 return res.status(404).send('No events available for this date')
@@ -55,60 +55,69 @@ const eventController = {
     },
 
     createEvent: async (req, res) => {
-        const { name, date_of_event, categorie, location, available_of_ticket } = req.body
-        let sql = "insert into event (name, date_of_event, categorie, location, available_of_ticket) values ($1, $2, $3, $4, $5) returning *";
-        const value = [name, date_of_event, categorie, location, available_of_ticket];
+        const { title, date_of_event, categorie, location, available_of_ticket } = req.body;
+
         try {
-            const maxIdResult = await pool.query("SELECT MAX(id) AS max_id FROM event");
-            const maxId = maxIdResult.rows[0].max_id || 0;
-            
-            await pool.query(`ALTER SEQUENCE event_id_seq RESTART WITH ${maxId + 1}`);
-            const result = await pool.query(sql, value);
-            res.status(201).send({
-                Information: "Event successfully created",
-                EventCreated: result.rows
+            const result = await pool.query(
+                `INSERT INTO event 
+             (title, date_of_event, categorie, location, available_of_ticket) 
+             VALUES ($1, $2, $3, $4, $5) 
+             RETURNING *`,
+                [title, date_of_event, categorie, location, available_of_ticket]
+            );
+
+            res.status(201).json({
+                data: result.rows[0]
             });
+
         } catch (e) {
-            res.status(400).send({
-                error: "Event creation error",
+            res.status(400).json({
+                error: "Erreur de création",
                 details: e.message
             });
         }
     },
 
     deleteEventById: async (req, res) => {
-        const id = parseInt(req.params.id); 
-        let sql = "delete from event where id = $1"
+        const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).send({error: "Invalid ID"})
+            return res.status(400).send({ error: "Invalid ID" });
         }
 
         try {
-            await pool.query(sql, [id]);
-            res.status(204).send("Event successfully deleted");
-        } catch(e) {
-            res.status(400).send({error: e.message})
+            await pool.query("DELETE FROM event WHERE id = $1", [id]);
+
+            await pool.query(`
+            SELECT setval('event_id_seq', (SELECT MAX(id) FROM event))
+        `);
+
+            res.status(204).send();
+        } catch (e) {
+            res.status(400).send({
+                error: "Delete failed",
+                details: e.message
+            });
         }
     },
 
     updateEventById: async (req, res) => {
         const id = parseInt(req.params.id);
-        const { name, date_of_event, categorie, location, available_of_ticket } = req.body;
-        const sql = "update event set name = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
-        const values = [name, date_of_event, categorie, location, available_of_ticket, id];
-        
+        const { title, date_of_event, categorie, location, available_of_ticket } = req.body;
+        const sql = "update event set title = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
+        const values = [title, date_of_event, categorie, location, available_of_ticket, id];
+
         if (isNaN(id)) {
-            return res.status(400).send({error: "Invalid ID"})
+            return res.status(400).send({ error: "Invalid ID" })
         }
 
         try {
             const isEventFinded = await Event.findEventById(id);
             console.log(isEventFinded);
-            
+
             if (isEventFinded === undefined) {
-                return res.status(404).send({error: "Event not found"})
+                return res.status(404).send({ error: "Event not found" })
             }
-            
+
             const eventUpdated = await pool.query(sql, values);
 
             res.status(200).send({
@@ -117,7 +126,7 @@ const eventController = {
             });
 
         } catch (e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send({ error: e.message })
         }
     }
 }
