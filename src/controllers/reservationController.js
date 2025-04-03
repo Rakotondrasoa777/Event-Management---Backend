@@ -66,12 +66,37 @@ const reservationController = {
 
     showUsersReservation: async (req, res) => {
         let sql = "select e.title, u.username, r.ticket_number, r.ticket_type, r.date_reservation, r.total_price_reservation from event e inner join reservation r on e.id = r.id_event inner join users u on u.id = r.id_user"
+        let totalPriceOfAllReservation = 0.0;
 
         try {
             const {rows} = await pool.query(sql);
-            res.status(200).json(rows)
+            for (let index = 0; index < rows.length; index++) {
+                totalPriceOfAllReservation += rows[index].total_price_reservation;
+            }
+            res.status(200).json({
+                totalPriceOfAllReservation: totalPriceOfAllReservation,
+                reservation: rows
+            })
         } catch (error) {
             res.status(400).json({error: error.message})
+        }
+    },
+    
+    statsTicketTypes: async (req, res) => {
+        const sql = `
+            SELECT 
+                ticket_type AS type,
+                COUNT(*) AS tickets_sold
+            FROM reservation
+            GROUP BY ticket_type
+            ORDER BY tickets_sold DESC
+        `;
+    
+        try {
+            const { rows } = await pool.query(sql);
+            res.status(200).json(rows);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
     }
 }
