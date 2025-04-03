@@ -55,9 +55,9 @@ const eventController = {
     },
 
     createEvent: async (req, res) => {
-        const { name, date_of_event, categorie, location, available_of_ticket } = req.body
-        let sql = "insert into event (name, date_of_event, categorie, location, available_of_ticket) values ($1, $2, $3, $4, $5) returning *";
-        const value = [name, date_of_event, categorie, location, available_of_ticket];
+        const { title, date_of_event, categorie, location, available_of_ticket } = req.body
+        let sql = "insert into event (title, date_of_event, categorie, location, available_of_ticket) values ($1, $2, $3, $4, $5) returning *";
+        const value = [title, date_of_event, categorie, location, available_of_ticket];
         try {
             const maxIdResult = await pool.query("SELECT MAX(id) AS max_id FROM event");
             const maxId = maxIdResult.rows[0].max_id || 0;
