@@ -29,7 +29,7 @@ const eventController = {
                 return res.status(404).send('Event not found');
             }
 
-            res.status(200).json(rows);
+            res.status(200).json(rows[0]);
         } catch (e) {
             console.error(e)
             res.status(500).send('Server error')
@@ -97,7 +97,7 @@ const eventController = {
     updateEventById: async (req, res) => {
         const id = parseInt(req.params.id);
         const { name, date_of_event, categorie, location, available_of_ticket } = req.body;
-        const sql = "update event set name = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
+        const sql = "update event set title = $1, date_of_event = $2, categorie = $3, location = $4, available_of_ticket = $5 where id = $6 returning *";
         const values = [name, date_of_event, categorie, location, available_of_ticket, id];
 
         if (isNaN(id)) {
@@ -106,8 +106,7 @@ const eventController = {
 
         try {
             const isEventFinded = await Event.findEventById(id);
-            console.log(isEventFinded);
-
+            
             if (isEventFinded === undefined) {
                 return res.status(404).send({ error: "Event not found" })
             }

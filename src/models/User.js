@@ -17,6 +17,13 @@ class User {
         return rows[0];
     }
 
+    static async findIdUserByUsername(username) {
+        const findUserSql = "select id, username, email, password from users where username = $1";
+        const {rows} = await pool.query(findUserSql, [username]);
+        
+        return rows[0];
+    }
+
     static async findUserById(id) {
         const findUserByIdSql = "select id from users where id = $1";
         const {rows} = await pool.query(findUserByIdSql, [id]);
