@@ -62,6 +62,17 @@ const reservationController = {
                 error: "Une erreur est survenue lors de recuperation des reservations"
             });
         }
+    },
+
+    showUsersReservation: async (req, res) => {
+        let sql = "select e.title, u.username, r.ticket_number, r.ticket_type, r.date_reservation, r.total_price_reservation from event e inner join reservation r on e.id = r.id_event inner join users u on u.id = r.id_user"
+
+        try {
+            const {rows} = await pool.query(sql);
+            res.status(200).json(rows)
+        } catch (error) {
+            res.status(400).json({error: error.message})
+        }
     }
 }
 
