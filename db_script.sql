@@ -23,7 +23,11 @@ CREATE TABLE users (
 
 CREATE TABLE reservation (
     id_event int,
-    id_user int, 
+    id_user int,
+    ticket_number int,
+    ticket_type ticket,
+    date_reservation date,
+    total_price_reservation float,
     constraint fk_event foreign key  (id_event) references event (id),
     constraint fk_user foreign key (id_user) references users (id)
 );
@@ -54,3 +58,4 @@ INSERT INTO ticket_stock (id_event, stock, price, type_of_ticket) VALUES
 (2, 100, 25.0, 'EARLY_BIRD'),
 (3, 100, 150.0, 'VIP'),
 (4, 100, 40.0, 'STANDARD');
+(5, 100, 50.0, 'STANDARD')
