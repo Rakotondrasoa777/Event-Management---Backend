@@ -73,6 +73,24 @@ const reservationController = {
         } catch (error) {
             res.status(400).json({error: error.message})
         }
+    },
+    
+    statsTicketTypes: async (req, res) => {
+        const sql = `
+            SELECT 
+                ticket_type AS type,
+                COUNT(*) AS tickets_sold
+            FROM reservation
+            GROUP BY ticket_type
+            ORDER BY tickets_sold DESC
+        `;
+    
+        try {
+            const { rows } = await pool.query(sql);
+            res.status(200).json(rows);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 }
 
