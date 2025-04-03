@@ -12,11 +12,6 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
-app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
-
 const authRoutes = require("./routes/authRoutes");
 app.use(express.json());
 
