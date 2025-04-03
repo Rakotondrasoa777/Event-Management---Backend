@@ -18,7 +18,7 @@ app.use("/events", eventRoutes);
 
 app.use("/users", userRoutes);
 
-app.get("/reservation", authRoutes, authMiddleware, (req, res) => {
+app.get("/", authRoutes, authMiddleware, (req, res) => {
     res.json({message: "Now, you can reserve events", user: req.users})
 })
 

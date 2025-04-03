@@ -27,7 +27,6 @@ const authController = {
     
         try {
             const user = await User.findUserByEmail(email);
-            console.log(user);
             
                 if(!user) {
                     return res.status(404).send({error: "User not found"})
@@ -38,7 +37,10 @@ const authController = {
                 return res.status(400).json({error: "Wrong password"});
             }
             const token = generateToken(user.username);
-            res.status(200).json({token});
+            res.status(200).json({
+                "token": token,
+                "username": user.username
+            });
         } catch (e) {
             res.status(400).json({error: e.message})
         }
