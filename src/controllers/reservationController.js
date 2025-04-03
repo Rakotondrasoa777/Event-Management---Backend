@@ -82,16 +82,49 @@ const reservationController = {
         }
     },
     
+    getMonthlyIncomeStats: async (req, res) => {
+        const sql = `
+            SELECT 
+                EXTRACT(MONTH FROM r.date_reservation) AS month,
+                SUM(r.total_price_reservation) AS total_revenue,
+                SUM(CASE 
+                    WHEN r.ticket_type = 'STANDARD' THEN 20 * r.ticket_number
+                    WHEN r.ticket_type = 'VIP' THEN 40 * r.ticket_number
+                    WHEN r.ticket_type = 'EARLY_BIRD' THEN 50 * r.ticket_number
+                END) AS total_cost
+            FROM reservation r
+            GROUP BY month
+            ORDER BY month
+        `;
+
+        try {
+            const { rows } = await pool.query(sql);
+            const dataset = rows.map(row => ({
+                month: row.month,
+                revenue: row.total_revenue / 1000, // en k€
+                cost: row.total_cost / 1000,
+                profit: (row.total_revenue - row.total_cost) / 1000
+            }));
+            res.status(200).json(dataset);
+        } catch (error) {
+            res.status(500).json({ 
+                error: "Erreur lors du calcul des revenus mensuels",
+                details: error.message 
+            });
+        }
+    },
+
     statsTicketTypes: async (req, res) => {
         const sql = `
             SELECT 
                 ticket_type AS type,
-                COUNT(*) AS tickets_sold
+                SUM(ticket_number) AS tickets_sold,
+                SUM(total_price_reservation) AS total_revenue
             FROM reservation
             GROUP BY ticket_type
             ORDER BY tickets_sold DESC
         `;
-    
+
         try {
             const { rows } = await pool.query(sql);
             res.status(200).json(rows);
