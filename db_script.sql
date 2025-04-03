@@ -57,5 +57,13 @@ INSERT INTO ticket_stock (id_event, stock, price, type_of_ticket) VALUES
 (1, 100, 50.0, 'STANDARD'),
 (2, 100, 25.0, 'EARLY_BIRD'),
 (3, 100, 150.0, 'VIP'),
-(4, 100, 40.0, 'STANDARD');
-(5, 100, 50.0, 'STANDARD')
+(4, 100, 40.0, 'STANDARD'),
+(5, 100, 50.0, 'STANDARD');
+
+
+CREATE TABLE pictures (
+    id SERIAL PRIMARY KEY,
+    id_event int,
+    image_url TEXT NOT NULL,
+    constraint fk_event foreign key (id_event) references event (id)
+)

@@ -4,6 +4,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const userRoutes = require("./routes/userRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 const resrervationRoutes = require("./routes/reservationRoutes");
+const pictureRoutes = require("./routes/pictureRoutes");
 
 const app = express();
 const port = 1818
@@ -22,6 +23,8 @@ app.use("/events", eventRoutes);
 app.use("/users", userRoutes);
 
 app.use("/reservation", resrervationRoutes);
+
+app.use("/pictures", pictureRoutes);
 
 app.get("/", authRoutes, authMiddleware, (req, res) => {
     res.json({message: "Now, you can reserve events", user: req.users})
