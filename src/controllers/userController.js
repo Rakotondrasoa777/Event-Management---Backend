@@ -57,45 +57,67 @@ const userControllers = {
     updateUserById: async (req, res) => {
         const id = parseInt(req.params.id);
         const { username, email, password } = req.body;
-        const sql = "update users set username = $1, email = $2, password = $3 where id = $4 returning *";
+        const sql = "UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *";
         const values = [username, email, password, id];
         
         if (isNaN(id)) {
-            return res.status(400).send({error: "Invalid ID"})
+            return res.status(400).send({ error: "Invalid ID" });
         }
-
+    
         try {
-            const isUserFinded = await User.findUserById(id);
-            console.log(isUserFinded);
+            // Vérifier d'abord si l'utilisateur existe
+            const userCheck = await pool.query("SELECT id FROM users WHERE id = $1", [id]);
             
-            if (isUserFinded === undefined) {
-                return res.status(404).send({error: "Event not found"})
+            if (userCheck.rows.length === 0) {
+                return res.status(404).send({ error: "User not found" });
             }
             
+            
             const userUpdated = await pool.query(sql, values);
-
+    
+            
+            if (userUpdated.rows.length === 0) {
+                return res.status(500).send({ error: "Update failed" });
+            }
+    
             res.status(200).send({
-                Information: "user successfully updated",
-                UserUpdated: userUpdated.rows
+                message: "User successfully updated",
+                user: userUpdated.rows[0] 
             });
-
+    
         } catch (e) {
-            res.status(400).send({error: e.message})
+            
+            if (e.code === '23505') {
+                const detail = e.detail.includes('email') ? 'Email already exists' : 'Username already exists';
+                return res.status(409).send({ error: detail });
+            }
+            res.status(400).send({ error: e.message });
         }
     },
 
     deleteUserById: async (req, res) => {
         const id = parseInt(req.params.id); 
-        let sql = "delete from users where id = $1"
+        let sql = "delete from users where id = $1 returning *"; 
+        
         if (isNaN(id)) {
-            return res.status(400).send({error: "Invalid ID"})
+            return res.status(400).send({error: "Invalid ID"});
         }
-
-        try {
-            await pool.query(sql, [id]);
-            res.status(204).send("user successfully deleted");
+    
+        try { 
+            const deleteResult = await pool.query(sql, [id]);
+            
+            if (deleteResult.rowCount === 0) {
+                return res.status(404).send({error: "User not found"});
+            }
+    
+            
+            res.status(200).send({
+                information: "User deleted successfully",
+                userDeleted: deleteResult.rows[0]
+            });
+            
         } catch(e) {
-            res.status(400).send({error: e.message})
+            res.status(400).send({error: e.message});
         }
     }
 }

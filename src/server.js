@@ -8,7 +8,9 @@ const resrervationRoutes = require("./routes/reservationRoutes");
 const app = express();
 const port = 1818
 
+
 app.use(cors())
+
 
 const authRoutes = require("./routes/authRoutes");
 app.use(express.json());
