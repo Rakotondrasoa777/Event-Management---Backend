@@ -121,6 +121,22 @@ const eventController = {
         } catch (e) {
             res.status(400).send({ error: e.message })
         }
+    },
+
+    getAvailableTicketOfEventById: async (req, res) => {
+        const id = parseInt(req.params.id)
+        let sql = "select t.id, e.title, t.stock, t.price, t.type_of_ticket from ticket_stock t inner join event e on t.id_event = e.id where e.id = $1"
+
+        if (isNaN(id)) {
+            return res.status(400).send({ error: "Invalid ID" })
+        }
+
+        try {
+            const {rows} = await pool.query(sql, [id]);
+            res.status(200).json(rows);
+        } catch (error) {
+            res.status(500).send({error: error.message})
+        }
     }
 }
 

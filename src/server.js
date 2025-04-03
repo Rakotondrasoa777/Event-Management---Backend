@@ -20,6 +20,8 @@ app.use("/auth", authRoutes);
 
 app.use("/events", eventRoutes);
 
+app.use("/tickets", eventRoutes)
+
 app.use("/users", userRoutes);
 
 app.use("/reservation", resrervationRoutes);
