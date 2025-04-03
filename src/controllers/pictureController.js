@@ -28,7 +28,6 @@ const pictureControllers = {
         }
     },
 
-    // Récupérer toutes les images
     getAllPictures: async (req, res) => {
         try {
             const { rows } = await pool.query('SELECT id, id_event, image_url FROM pictures');
@@ -39,7 +38,6 @@ const pictureControllers = {
         }
     },
 
-    // Récupérer une image par son ID
     getPictureById: async (req, res) => {
         const id = parseInt(req.params.id);
         let sql = "SELECT id, id_event, image_url FROM pictures WHERE id = $1";
@@ -62,7 +60,6 @@ const pictureControllers = {
         }
     },
 
-    // Récupérer toutes les images d'un événement spécifique
     getPicturesByEventId: async (req, res) => {
         const eventId = parseInt(req.params.eventId);
         let sql = "SELECT id, id_event, image_url FROM pictures WHERE id_event = $1";
@@ -72,7 +69,6 @@ const pictureControllers = {
         }
     
         try {
-            // Vérifier si l'événement existe
             const eventCheck = await pool.query("SELECT id FROM event WHERE id = $1", [eventId]);
             
             if (eventCheck.rows.length === 0) {
@@ -87,7 +83,6 @@ const pictureControllers = {
         }
     },
 
-    // Mettre à jour une image
     updatePictureById: async (req, res) => {
         const id = parseInt(req.params.id);
         const { image_url } = req.body;
@@ -99,7 +94,6 @@ const pictureControllers = {
         }
     
         try {
-            // Vérifier d'abord si l'image existe
             const pictureCheck = await pool.query("SELECT id FROM pictures WHERE id = $1", [id]);
             
             if (pictureCheck.rows.length === 0) {
@@ -122,7 +116,6 @@ const pictureControllers = {
         }
     },
 
-    // Supprimer une image
     deletePictureById: async (req, res) => {
         const id = parseInt(req.params.id); 
         let sql = "DELETE FROM pictures WHERE id = $1 RETURNING *"; 
