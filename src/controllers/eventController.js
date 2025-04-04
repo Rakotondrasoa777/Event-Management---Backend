@@ -90,6 +90,7 @@ const eventController = {
 
         try {
             await pool.query(sql, [id]);
+            await pool.query("delete from ticket_stock where id_event = $1", [id]);
             res.status(204).send("Event successfully deleted");
         } catch (e) {
             res.status(400).send({ error: e.message })
