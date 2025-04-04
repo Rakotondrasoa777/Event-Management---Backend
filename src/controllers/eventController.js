@@ -55,15 +55,15 @@ const eventController = {
     },
 
     createEvent: async (req, res) => {
-        const { title, date_of_event, categorie, location, available_of_ticket, id_event, stock, price, type_of_ticket } = req.body;
+        const { title, date_of_event, categorie, description, location, available_of_ticket, id_event, stock, price, type_of_ticket } = req.body;
 
         try {
             const result = await pool.query(
                 `INSERT INTO event 
-             (title, date_of_event, categorie, location, available_of_ticket) 
-             VALUES ($1, $2, $3, $4, $5) 
+             (title, date_of_event, categorie, description, location, available_of_ticket) 
+             VALUES ($1, $2, $3, $4, $5, $6) 
              RETURNING *`,
-                [title, date_of_event, categorie, location, available_of_ticket]
+                [title, date_of_event, categorie, description, location, available_of_ticket]
             );
 
             await pool.query("insert into ticket_stock (id_event, stock, price, type_of_ticket) values ($1, $2, $3, $4)", [id_event, stock, price, type_of_ticket]);
