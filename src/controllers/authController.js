@@ -15,7 +15,7 @@ const authController = {
 
             const user = await User.createUser(username, email, password);
             const token = await generateToken(user.username);
-            res.status(201).send({token});
+            res.status(201).send({token, username});
         } catch(e) {
             res.status(400).json({error: e.message})
         }
