@@ -43,6 +43,7 @@ CREATE TABLE ticket_stock (
     constraint fk_event foreign key (id_event) references event (id)
 );
 
+alter table ticket_stock drop constraint fk_event add constraint fk_event foreign key (id_event) references event (id) on delete cascade
 
 /*-----Insertion-----*/
 INSERT INTO event (title, date_of_event, categorie, descritption, location, available_of_ticket, img) VALUES 
