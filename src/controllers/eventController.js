@@ -16,7 +16,7 @@ const eventController = {
 
     getEventById: async (req, res) => {
         const id = parseInt(req.params.id);
-        let sql = "select e.id, e.title, e.date_of_event, e.categorie, e.description, e.location, e.available_of_ticket, ts.price, ts.type_of_ticket from event e inner join ticket_stock ts on e.id = ts.id_event where e.id = $1"
+        let sql = "select e.id, e.title, e.date_of_event, e.categorie, e.description, e.location, e.available_of_ticket, e.img, ts.price, ts.type_of_ticket from event e inner join ticket_stock ts on e.id = ts.id_event where e.id = $1"
 
         if (isNaN(id)) {
             return res.status(400).send('Invalid ID');
