@@ -55,7 +55,7 @@ const eventController = {
     },
 
     createEvent: async (req, res) => {
-        const { title, date_of_event, categorie, location, available_of_ticket } = req.body;
+        const { title, date_of_event, categorie, location, available_of_ticket, id_event, stock, price, type_of_ticket } = req.body;
 
         try {
             const result = await pool.query(
@@ -65,6 +65,8 @@ const eventController = {
              RETURNING *`,
                 [title, date_of_event, categorie, location, available_of_ticket]
             );
+
+            await pool.query("insert into ticket_stock (id_event, stock, price, type_of_ticket) values ($1, $2, $3, $4)", [id_event, stock, price, type_of_ticket]);
 
             // Formatage de la réponse pour React-Admin
             res.status(201).json({
