@@ -60,7 +60,7 @@ const eventController = {
         try {
             const result = await pool.query(
                 `INSERT INTO event 
-             (title, date_of_event, categorie, description, location, available_of_ticket) 
+             (title, date_of_event, categorie, description, location, available_of_ticket, img) 
              VALUES ($1, $2, $3, $4, $5, $6, $7) 
              RETURNING *`,
                 [title, date_of_event, categorie, description, location, available_of_ticket, img]
