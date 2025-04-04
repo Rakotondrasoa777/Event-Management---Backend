@@ -8,7 +8,7 @@ CREATE TABLE event (
     title varchar(200) not null,
     date_of_event date,
     categorie varchar(100),
-    descritption varchar,
+    description varchar,
     location varchar(100),
     available_of_ticket date,
     img varchar
@@ -43,10 +43,10 @@ CREATE TABLE ticket_stock (
     constraint fk_event foreign key (id_event) references event (id)
 );
 
-alter table ticket_stock drop constraint fk_event add constraint fk_event foreign key (id_event) references event (id) on delete cascade
+alter table ticket_stock drop constraint fk_event, add constraint fk_event foreign key (id_event) references event (id) on delete cascade
 
 /*-----Insertion-----*/
-INSERT INTO event (title, date_of_event, categorie, descritption, location, available_of_ticket, img) VALUES 
+INSERT INTO event (title, date_of_event, categorie, description, location, available_of_ticket, img) VALUES 
 ('Music Concert', '2025-05-15', 'Music', 'A live performance featuring world-renowned musicians. The concert will include a variety of genres, from classical to contemporary, offering a unique experience for music lovers of all kinds.', 'New York City', '2025-04-01', 'https://t3.ftcdn.net/jpg/02/08/48/72/240_F_208487214_yYZIU5xeXEBf58bOCahhpbx5RLzUglWU.jpg'),
 ('Art Exhibition', '2025-06-10', 'Art', 'An exciting showcase of contemporary art from emerging and established artists. The exhibition will explore themes such as identity, culture, and technology, with works in various mediums including painting, sculpture, and digital art.', 'London', '2025-05-01', 'https://as2.ftcdn.net/v2/jpg/04/39/50/23/1000_F_439502320_cqDdMLEndcOdLMm6ekyDmI5slUht2ZSU.jpg'),
 ('Tech Conference', '2025-07-20', 'Technology', 'A global gathering of tech enthusiasts, innovators, and industry leaders. The conference will feature keynote speakers, panel discussions, and hands-on workshops covering the latest trends in artificial intelligence, blockchain, and cybersecurity.', 'San Francisco', '2025-06-01', 'https://t3.ftcdn.net/jpg/08/95/85/06/240_F_895850642_NiGp7siX13o7T3FXqUbgXpvaFyni4NM8.jpg'),
@@ -54,12 +54,12 @@ INSERT INTO event (title, date_of_event, categorie, descritption, location, avai
 ('Comedy Show', '2025-09-05', 'Comedy', 'A night of laughter with some of the funniest stand-up comedians in the industry. The show will feature a mix of both well-known comedians and fresh talent, providing an evening full of entertainment and humor.', 'Chicago', '2025-08-01', 'D:\Examen-Web3-NextJS\Tapakila_NextJS\public\cardImage\Comedy Show.jpg');
 
 INSERT INTO ticket_stock (id_event, stock, price, type_of_ticket) VALUES 
-(1, 100, 100.0, 'VIP'),
-(1, 100, 50.0, 'STANDARD'),
-(2, 100, 25.0, 'EARLY_BIRD'),
-(3, 100, 150.0, 'VIP'),
-(4, 100, 40.0, 'STANDARD'),
-(5, 100, 50.0, 'STANDARD');
+(11, 100, 100.0, 'VIP'),
+(11, 100, 50.0, 'STANDARD'),
+(12, 100, 25.0, 'EARLY_BIRD'),
+(13, 100, 150.0, 'VIP'),
+(14, 100, 40.0, 'STANDARD'),
+(15, 100, 50.0, 'STANDARD');
 
 
 CREATE TABLE pictures (
