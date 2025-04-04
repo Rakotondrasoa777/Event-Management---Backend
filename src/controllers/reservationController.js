@@ -45,10 +45,11 @@ const reservationController = {
     },
 
     showReserveOfUser: async (req, res) => {
-        const {username} = req.body
+        const username = req.params.username;
+    
         const idUser = await User.findIdUserByUsername(username);
         
-        let sql = "select e.title, r.ticket_number, r.ticket_type, r.date_reservation, r.total_price_reservation from reservation r inner join  event e on e.id = r.id_event inner join users u on r.id_user = u.id where r.id_user = $1"
+        let sql = "select e.title, r.ticket_number, r.ticket_type, r.date_reservation, r.total_price_reservation from reservation r inner join  event e on e.id = r.id_event inner join users u on r.id_user = u.id where r.username = $1"
 
         try {
             const reservationOfUser = await pool.query(sql, [idUser.id])
